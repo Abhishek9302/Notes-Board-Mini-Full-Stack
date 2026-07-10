@@ -1,0 +1,51 @@
+{
+  "appType": "fullstack",
+  "frontend": {
+    "framework": "nextjs",
+    "dir": "apps/frontend",
+    "apiBaseEnvVar": "NEXT_PUBLIC_API_URL",
+    "requiredFiles": [
+      "apps/frontend/package.json",
+      "apps/frontend/next.config.js",
+      "apps/frontend/tsconfig.json",
+      "apps/frontend/src/app/layout.tsx",
+      "apps/frontend/src/app/page.tsx",
+      "apps/frontend/src/app/notes/new/page.tsx",
+      "apps/frontend/src/app/notes/[id]/page.tsx",
+      "apps/frontend/src/lib/api.ts",
+      "apps/frontend/src/components/NoteCard.tsx",
+      "apps/frontend/src/components/NoteForm.tsx"
+    ]
+  },
+  "backend": {
+    "framework": "express",
+    "dir": "apps/backend",
+    "portEnvVar": "PORT",
+    "databaseUrlEnvVar": "DATABASE_URL",
+    "requiredFiles": [
+      "apps/backend/package.json",
+      "apps/backend/tsconfig.json",
+      "apps/backend/src/index.ts",
+      "apps/backend/src/db.ts",
+      "apps/backend/src/routes/notes.ts",
+      "apps/backend/src/routes/health.ts"
+    ],
+    "requiredRoutes": [
+      "/health",
+      "/api/notes",
+      "/api/notes/:id"
+    ]
+  },
+  "database": {
+    "engine": "postgres",
+    "schemaFile": "database/schema.sql",
+    "requiredTables": [
+      "notes"
+    ]
+  },
+  "storage": {
+    "usesS3": false,
+    "bucketEnvVar": null,
+    "regionEnvVar": null
+  }
+}

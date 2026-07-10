@@ -1,0 +1,42 @@
+{
+  "$schema": "zero-human/deploy-manifest@1",
+  "appType": "fullstack",
+  "frontend": {
+    "framework": "nextjs",
+    "dir": ".",
+    "apiBaseEnvVar": "NEXT_PUBLIC_API_URL",
+    "requiredFiles": [
+      "package.json",
+      "app/page.tsx",
+      "src/api.ts"
+    ]
+  },
+  "backend": {
+    "framework": "express",
+    "dir": "backend",
+    "portEnvVar": "PORT",
+    "databaseUrlEnvVar": "DATABASE_URL",
+    "requiredFiles": [
+      "package.json",
+      "src/index.ts",
+      "src/db.ts"
+    ],
+    "requiredRoutes": [
+      "/health",
+      "/auth/signup",
+      "/auth/login"
+    ]
+  },
+  "database": {
+    "engine": "postgresql",
+    "schemaFile": "database/schema.sql",
+    "requiredTables": [
+      "users"
+    ]
+  },
+  "storage": {
+    "usesS3": false,
+    "bucketEnvVar": "S3_BUCKET",
+    "regionEnvVar": "S3_REGION"
+  }
+}
