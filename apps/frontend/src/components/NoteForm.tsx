@@ -6,7 +6,7 @@ export default function NoteForm({
   onSubmit,
   onCancel,
 }: {
-  onSubmit: (payload: { title: string; body: string }) => void;
+  onSubmit: (payload: { title: string; body: string }) => void | Promise<void>;
   onCancel: () => void;
 }) {
   const [title, setTitle] = useState("");
@@ -18,39 +18,39 @@ export default function NoteForm({
     if (!title.trim()) return;
     setBusy(true);
     try {
-      onSubmit({ title: title.trim(), body: body.trim() });
+      await onSubmit({ title: title.trim(), body: body.trim() });
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12 }}>
-      <div>
+    <form className="form-grid panel" onSubmit={handleSubmit}>
+      <div className="field">
         <label htmlFor="title">Title</label>
         <input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="What’s on your mind?"
           required
-          style={{ width: "100%", padding: 8, marginTop: 4 }}
         />
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="body">Body</label>
         <textarea
           id="body"
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          rows={6}
-          style={{ width: "100%", padding: 8, marginTop: 4 }}
+          rows={8}
+          placeholder="Write the note…"
         />
       </div>
-      <div style={{ display: "flex", gap: 8 }}>
-        <button type="submit" disabled={busy} style={{ padding: "8px 16px", cursor: "pointer" }}>
-          {busy ? "Saving…" : "Save"}
+      <div className="actions">
+        <button type="submit" className="btn btn-primary" disabled={busy}>
+          {busy ? "Saving…" : "Save note"}
         </button>
-        <button type="button" onClick={onCancel} style={{ padding: "8px 16px", cursor: "pointer" }}>
+        <button type="button" className="btn btn-ghost" onClick={onCancel}>
           Cancel
         </button>
       </div>

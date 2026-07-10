@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import healthRouter from "./routes/health";
 import notesRouter from "./routes/notes";
 import authRouter from "./routes/auth";
+import { initSchema } from "./initSchema";
 
 dotenv.config();
 
@@ -17,6 +18,17 @@ app.use("/health", healthRouter);
 app.use("/api/notes", notesRouter);
 app.use("/auth", authRouter);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Backend listening on http://0.0.0.0:${PORT}`);
-});
+async function start() {
+  try {
+    await initSchema();
+  } catch (err) {
+    console.error("[boot] schema init failed:", err);
+    process.exit(1);
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Backend listening on http://0.0.0.0:${PORT}`);
+  });
+}
+
+start();

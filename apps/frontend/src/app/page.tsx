@@ -17,7 +17,7 @@ export default function HomePage() {
       const data = await getNotes();
       setNotes(data);
     } catch (e) {
-      setError(String(e));
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
     }
@@ -33,27 +33,32 @@ export default function HomePage() {
       await deleteNote(id);
       setNotes((prev) => prev.filter((n) => n.id !== id));
     } catch (e) {
-      alert(String(e));
+      alert(e instanceof Error ? e.message : String(e));
     }
   }
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1>Notes Board</h1>
-        <Link href="/notes/new">
-          <button style={{ padding: "8px 16px", cursor: "pointer" }}>New Note</button>
+    <main className="shell">
+      <header className="brand-bar">
+        <div className="brand">
+          <h1>Notes Board</h1>
+          <p>A quiet place for quick thoughts — create, open, and clear notes in one board.</p>
+        </div>
+        <Link href="/notes/new" className="btn btn-primary">
+          New Note
         </Link>
-      </div>
+      </header>
 
-      {loading && <p>Loading…</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p className="status">Loading notes…</p>}
+      {error && <p className="status error">Couldn’t load notes: {error}</p>}
 
-      {!loading && notes.length === 0 && <p>No notes yet.</p>}
+      {!loading && !error && notes.length === 0 && (
+        <div className="empty">No notes yet. Start with a new one.</div>
+      )}
 
-      <div style={{ display: "grid", gap: 16 }}>
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} onDelete={handleDelete} />
+      <div className="notes-grid">
+        {notes.map((note, index) => (
+          <NoteCard key={note.id} note={note} onDelete={handleDelete} style={{ animationDelay: `${index * 40}ms` }} />
         ))}
       </div>
     </main>

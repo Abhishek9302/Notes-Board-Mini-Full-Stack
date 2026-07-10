@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createNote } from "@/lib/api";
 import NoteForm from "@/components/NoteForm";
 
@@ -13,8 +14,16 @@ export default function NewNotePage() {
   }
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "24px" }}>
-      <h1>New Note</h1>
+    <main className="shell">
+      <Link href="/" className="back-link">
+        ← Back to board
+      </Link>
+      <header className="brand-bar">
+        <div className="brand">
+          <h1>New Note</h1>
+          <p>Add a title and a few lines — it lands on the board immediately.</p>
+        </div>
+      </header>
       <NoteForm onSubmit={handleSubmit} onCancel={() => router.push("/")} />
     </main>
   );
